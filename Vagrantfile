@@ -8,12 +8,14 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.hostname = "vagrant-fuel-berkshelf"
-
-  config.vm.box = "ubuntu-1204"
-
-  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-i386-vagrant-disk1.box"
+  config.vm.box = "ubuntu-1204-chef11"
+  #config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-i386-vagrant-disk1.box"
+  #config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box_url = "http://grahamc.com/vagrant/ubuntu-12.04.2-i386-chef-11-omnibus.box"
+  config.vbguest.auto_update = false
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    #vb.customize ["modifyvm", :id, "--memory", "1024"]
+    #vb.gui = true
   end
   config.vm.network :private_network, ip: "33.33.33.10"
   #config.vm.network "forwarded_port", guest: 80, host: 8080
@@ -38,12 +40,12 @@ Vagrant.configure("2") do |config|
       }
     }
     # Chefを実行
-    chef.cookbooks_path = ["./site-cookbooks","./cookbooks"]
+    chef.cookbooks_path = ["./site-cookbooks","./berks-cookbooks"]
     chef.add_recipe     "base::role"
-    chef.add_recipe     "php5"
+    chef.add_recipe     "php54"
     chef.add_recipe     "php5-fpm"
     chef.add_recipe     "fuelphp"
-    chef.add_recipe    "nginx"
+    chef.add_recipe     "nginx"
 	# ログレベル
     #chef.log_level = :debug
   end 
